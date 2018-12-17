@@ -19,11 +19,10 @@ class SheetDrawer {
     drawSheet(fontParameters, nibSize = 3) {
         if (this.canvas.getContext) {
             var ctx = this.canvas.getContext('2d');
-            ctx.font = "15px Arial";
-            var top = this.configuration.dpi / 2.54;
-            const numberMax = 5;
+            var top = this.configuration.margin_top * this.configuration.dpi;
+            const numberMax = this.computeMaxGroupOfLinesNumber(fontParameters, nibSize);
+            console.log(numberMax);
             for(var j = 0; j < numberMax ; j++) {
-               top = top + this.configuration.dpi / 2.54 * 2;
                 this.drawNormalLine(ctx, this.canvas.width, top);
                 for(var i = 0; i < fontParameters.nibStrokesNumber; i++) {
                     this.drawNibReference(ctx, this.convertMmToInches(nibSize) * this.configuration.dpi, top, i);
@@ -32,10 +31,15 @@ class SheetDrawer {
 
                 }
                 this.drawNormalLine(ctx, this.canvas.width, top);
-                top = top + this.convertMmToInches(nibSize) * 5;
+                top += this.configuration.dpi * this.configuration.in_between;
             }
         }
+    }
 
+    computeMaxGroupOfLinesNumber(fontParameters, nibSize) {
+        const effectiveHeight = this.canvas.height - this.configuration.margin_top * this.configuration.dpi - this.configuration.margin_bottom * this.configuration.dpi;
+        const heightGroupOfLines = this.convertMmToInches(nibSize) * this.configuration.dpi * fontParameters.nibStrokesNumber + this.configuration.in_between * this.configuration.dpi;
+        return Math.trunc(effectiveHeight / heightGroupOfLines);
     }
 
     drawNormalLine(context, x, y) {
