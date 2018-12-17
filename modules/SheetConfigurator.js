@@ -1,17 +1,18 @@
 import { writingScripts } from "../config/writingScripts.js";
 import { WritingScript } from "../model/WritingScript.js";
+import { SheetConfiguration } from "../model/SheetConfiguration.js";
 
-class WritingScriptsSelector {
+class SheetConfigurator {
 
     constructor() {
+        this.sheetConfiguration = new SheetConfiguration();
         this.writingScripts = writingScripts.map(writingScript => new WritingScript(writingScript));
-        this.scriptSelector = document.getElementsByTagName("script-selector")[0];
-        this.initializeSelector();
+        this.scriptSelector = document.getElementById("configuration-script");
+        this.nibSizeInput = document.getElementById("configuration-nib-size");
+        this.initializeScriptSelector();
     };
 
-    initializeSelector() {
-        this.htmlScriptSelector = document.createElement("select");
-        this.htmlScriptSelector.id = "script-selector";
+    initializeScriptSelector() {
         for (let i = 0; i < this.writingScripts.length; i++) {
             var option = document.createElement("option");
             option.value = i;
@@ -22,15 +23,20 @@ class WritingScriptsSelector {
         this.registerEvents(this.htmlScriptSelector);
     };
 
-
     getCurrentScript()
     {
         return this.writingScripts[this.htmlScriptSelector.selectedIndex];
     }
 
+    updateScript() {
+
+    }
 
     registerEvents() {
+        this.scriptSelector.addEventListener("change", this.updateScript);
+        this.nibSizeInput.addEventListener();
+
     };
 }
 
-export { WritingScriptsSelector };
+export { SheetConfigurator };
