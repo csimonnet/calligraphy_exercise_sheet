@@ -17,25 +17,26 @@ class SheetConfigurator {
             var option = document.createElement("option");
             option.value = i;
             option.text = this.writingScripts[i].getName();
-            this.htmlScriptSelector.appendChild(option);
+            this.scriptSelector.appendChild(option);
         }
-        document.getElementsByTagName("body")[0].insertBefore(this.htmlScriptSelector, document.getElementsByTagName("canvas")[0]);
-        this.registerEvents(this.htmlScriptSelector);
+        document.getElementsByTagName("body")[0].insertBefore(this.scriptSelector, document.getElementsByTagName("canvas")[0]);
+        this.registerEvents(this.scriptSelector);
+        this.sheetConfiguration.writingScript = this.writingScripts[0];
     };
 
     getCurrentScript()
     {
-        return this.writingScripts[this.htmlScriptSelector.selectedIndex];
+        return this.writingScripts[this.scriptSelector.selectedIndex];
     }
 
-    updateScript() {
-
+    updateScript()
+    {
+        this.sheetConfiguration.writingScript = this.getCurrentScript();
     }
 
     registerEvents() {
         this.scriptSelector.addEventListener("change", this.updateScript);
         this.nibSizeInput.addEventListener();
-
     };
 }
 
